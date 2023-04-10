@@ -82,8 +82,7 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
     @Test
     public void maybe() {
         Mono<String> result = maybe_service()
-                //todo: change this line only
-                ;
+                .defaultIfEmpty("no results");
 
         StepVerifier.create(result)
                     .expectNext("no results")
@@ -96,10 +95,8 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
      */
     @Test
     public void sequence_sum() {
-        Mono<Integer> sum = null;
-        numerical_service()
-        //todo: do your changes here
-        ;
+        Mono<Integer> sum = numerical_service()
+            .reduce(Integer::sum);
 
         StepVerifier.create(sum)
                     .expectNext(55)
@@ -113,8 +110,7 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
     @Test
     public void sum_each_successive() {
         Flux<Integer> sumEach = numerical_service()
-                //todo: do your changes here
-                ;
+            .scan(Integer::sum);
 
         StepVerifier.create(sumEach)
                     .expectNext(1, 3, 6, 10, 15, 21, 28, 36, 45, 55)
@@ -130,9 +126,8 @@ public class c2_TransformingSequence extends TransformingSequenceBase {
      */
     @Test
     public void sequence_starts_with_zero() {
-        Flux<Integer> result = numerical_service()
-                //todo: change this line only
-                ;
+        Flux<Integer> result = Mono.just(0)
+                .concatWith(numerical_service());
 
         StepVerifier.create(result)
                     .expectNext(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
