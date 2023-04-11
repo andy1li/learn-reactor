@@ -75,7 +75,7 @@ public class c4_LifecycleHooks extends LifecycleHooksBase {
         Flux<Integer> temperatureFlux = room_temperature_service()
                 .doOnNext(x -> {
                     System.out.println(x);
-                    counter.set(counter.get() + 1);
+                    counter.incrementAndGet();
                 });
 
         StepVerifier.create(temperatureFlux)
@@ -131,7 +131,7 @@ public class c4_LifecycleHooks extends LifecycleHooksBase {
         AtomicInteger hooksTriggeredCounter = new AtomicInteger(0);
 
         Flux<Integer> temperatureFlux = room_temperature_service()
-                .doOnTerminate(() -> hooksTriggeredCounter.set(hooksTriggeredCounter.get() + 1));
+                .doOnTerminate(hooksTriggeredCounter::incrementAndGet);
 
         StepVerifier.create(temperatureFlux.take(0))
                     .expectNextCount(0)
@@ -158,7 +158,7 @@ public class c4_LifecycleHooks extends LifecycleHooksBase {
         AtomicInteger hooksTriggeredCounter = new AtomicInteger(0);
 
         Flux<Integer> temperatureFlux = room_temperature_service()
-                .doFinally($ -> hooksTriggeredCounter.set(hooksTriggeredCounter.get() + 1));
+                .doFinally($ -> hooksTriggeredCounter.incrementAndGet());
 
         StepVerifier.create(temperatureFlux)
                     .thenCancel()
