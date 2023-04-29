@@ -306,7 +306,6 @@ public class c5_CreatingSequence {
      */
     @Test
     public void multi_threaded_producer() {
-        //todo: find a bug and fix it!
         Flux<Integer> producer = Flux.create(sink -> {
             for (int i = 0; i < 100; i++) {
                 int finalI = i;
